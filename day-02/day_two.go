@@ -23,7 +23,7 @@ func replaceStringNumbers(inputString string) string {
 	return inputString
 }
 
-func OnlyIntegers(inputArray []string) []string {
+func onlyIntegers(inputArray []string) []string {
 	numStringArray := make([]string, 0, len(inputArray)) // learning to make empty arrays
 
 	for _, line := range inputArray {
@@ -54,7 +54,7 @@ func main() {
 	input_text := string(dat)
 	input_array := strings.Split(input_text, "\n")
 	// fmt.Println(input_array)
-	integer_string_array := OnlyIntegers(input_array)
+	integer_string_array := onlyIntegers(input_array)
 	fmt.Println(integer_string_array)
 	total_sum := 0
 	for _, numStr := range integer_string_array {
