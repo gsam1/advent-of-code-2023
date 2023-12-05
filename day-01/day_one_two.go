@@ -1,4 +1,4 @@
-package main
+package main_two
 
 import (
 	"fmt"
@@ -14,41 +14,59 @@ func check(e error) {
 	}
 }
 
-func replaceStringNumbers(inputString string) string {
-	numStrMap := map[string]string{"one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six": "6", "seven": "7", "eight": "8", "nine": "9", "zero": "0"}
-	for spelledStr, numStr := range numStrMap {
-		inputString = strings.Replace(inputString, spelledStr, numStr, 100) // lazy solution
-	}
-	// inputString = strings.Replace(inputString, "one", "1", 20) // lazy solution
-	return inputString
-}
-
 func onlyIntegers(inputArray []string) []string {
 	numStringArray := make([]string, 0, len(inputArray)) // learning to make empty arrays
+	numStrMap := map[string]string{
+		"one":   "1",
+		"two":   "2",
+		"three": "3",
+		"four":  "4",
+		"five":  "5",
+		"six":   "6",
+		"seven": "7",
+		"eight": "8",
+		"nine":  "9",
+	}
 
 	for _, line := range inputArray {
-		line = replaceStringNumbers(line)
 		onlyNumbersTmp := ""
-		for _, char := range line {
+		for i, char := range line {
 			if unicode.IsNumber(char) {
 				onlyNumbersTmp += string(char)
 			}
+
+			for j := 1; j < 6; j++ {
+				if i+j >= len(line) {
+					val, ok := numStrMap[line[i:]]
+					if ok {
+						onlyNumbersTmp += val
+					}
+				} else {
+					val, ok := numStrMap[line[i:i+j]]
+					if ok {
+						onlyNumbersTmp += val
+					}
+				}
+
+			}
+
 		}
+		fmt.Printf("Original string %s parsed digits %s \n", line, onlyNumbersTmp)
 
 		if len(onlyNumbersTmp) == 1 {
 			onlyNumbersTmp += onlyNumbersTmp
 		}
 
-		if len(onlyNumbersTmp) > 2 {
+		if len(onlyNumbersTmp) >= 2 {
 			onlyNumbersTmp = string(onlyNumbersTmp[0]) + string(onlyNumbersTmp[len(onlyNumbersTmp)-1])
 		}
-
+		fmt.Printf("Parsed %s \n", onlyNumbersTmp)
 		numStringArray = append(numStringArray, onlyNumbersTmp)
 	}
 	return numStringArray
 }
 
-func main() {
+func main_two() {
 	dat, err := os.ReadFile("input.txt")
 	check(err)
 	input_text := string(dat)
