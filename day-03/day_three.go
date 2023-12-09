@@ -147,17 +147,28 @@ func main() {
 	}
 
 	totalSum := 0
+	ratioSum := 0
 	for _, v := range numbers {
 		tmpSum := 0
+		tmpRatio := 0
+		if len(v.value) == 2 {
+			a, err := strconv.Atoi(v.value[0])
+			check(err)
+			b, err := strconv.Atoi(v.value[1])
+			check(err)
+			tmpRatio += a * b
+		}
 		for _, vv := range v.value {
 			val, err := strconv.Atoi(vv)
 			check(err)
 			tmpSum += val
 		}
 		// fmt.Println(v, tmpSum)
+		ratioSum += tmpRatio
 		totalSum += tmpSum
 
 	}
 	fmt.Println("----Results")
-	fmt.Println(totalSum)
+	fmt.Println("Part One: ", totalSum)
+	fmt.Println("Part Two: ", ratioSum)
 }
