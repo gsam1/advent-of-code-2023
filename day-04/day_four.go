@@ -13,6 +13,13 @@ func check(e error) {
 	}
 }
 
+func getCardInt(cardName string) int {
+	cardStrIdSplit := strings.Fields(cardName)
+	cardId, err := strconv.Atoi(cardStrIdSplit[1])
+	check(err)
+	return cardId
+}
+
 func parseNumbers(inputStr string) []int {
 	var numbers []int
 	numbersSplit := strings.Fields(inputStr)
@@ -46,14 +53,37 @@ func calcPoints(numMatch int) int {
 	}
 }
 
+func calcCardCopySum(cardsMap map[int]int) int {
+	totalSum := 0
+	for _, v := range cardsMap {
+		totalSum += v
+	}
+	return totalSum
+}
+
+func printCardCopySum(cardsMap map[int]int) {
+	for k, v := range cardsMap {
+		fmt.Println(k, v)
+	}
+}
+
 func main() {
 	fmt.Println("Day4!!!")
 	data, err := os.ReadFile("input.txt")
 	check(err)
 	dataLines := strings.Split(string(data), "\n")
 	totalPoints := 0
+	cardsMap := map[int]int{}
+
+	// initial seeding of the cardNumberSplit
 	for _, row := range dataLines {
 		cardNumbersSplit := strings.Split(row, ":")
+		cardsMap[getCardInt(cardNumbersSplit[0])] = 1
+	}
+
+	for _, row := range dataLines {
+		cardNumbersSplit := strings.Split(row, ":")
+		currentCardId := getCardInt(cardNumbersSplit[0])
 		numbersSplit := strings.Split(cardNumbersSplit[1], "|")
 		numbersGot := strings.TrimSpace(numbersSplit[0])
 		numbersWin := strings.TrimSpace(numbersSplit[1])
@@ -61,10 +91,23 @@ func main() {
 		intWin := parseNumbers(numbersWin)
 		intNumWins := getNumWin(intGot, intWin)
 		intPoints := calcPoints(intNumWins)
+
+		increment := cardsMap[currentCardId]
+		for i := currentCardId + 1; i <= currentCardId+intNumWins; i++ {
+			if i <= len(dataLines) {
+				cardsMap[i] += increment
+			}
+		}
+
+		fmt.Println(getCardInt(cardNumbersSplit[0]), intNumWins, cardsMap)
 		// fmt.Println(row, intNumWins, intPoints)
 		totalPoints += intPoints
 	}
-	fmt.Println("Result", totalPoints)
+
+	fmt.Println("Part One Result", totalPoints)
+	// fmt.Println(cardsMap)
+	// printCardCopySum(cardsMap)
+	fmt.Println("Part Two Result", calcCardCopySum(cardsMap))
 	// scoring
 	// 1 double(1) = 2; double(double(double(1))) -
 
