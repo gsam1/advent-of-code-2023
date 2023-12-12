@@ -30,13 +30,13 @@ func convertStrToInt(inputStr string) int {
 }
 
 func main() {
-	fmt.Println("Day4!!!")
+	fmt.Println("Day5!!!")
 	data, err := os.ReadFile("input.txt")
 	check(err)
 	dataLines := strings.Split(string(data), "\n")
 	seedsStr := strings.Fields(strings.Split(string(dataLines[0]), ":")[1])
 	// Initial seeding
-	var seeds map[int]Seed
+	seeds := map[int]Seed{}
 	for _, seed := range seedsStr {
 		seedId := convertStrToInt(seed)
 		if seedId > 0 {
@@ -52,5 +52,12 @@ func main() {
 			seeds[seedId] = seed
 		}
 	}
-	fmt.Println(seeds)
+
+	mapSplits := strings.Split(string(data), "\n\n")
+	type CustomMap map[int]int
+
+	for _, mapping := range mapSplits {
+		fmt.Println(mapping)
+	}
+
 }
