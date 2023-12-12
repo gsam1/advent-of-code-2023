@@ -14,7 +14,6 @@ func check(e error) {
 }
 
 type Seed struct {
-	seed        int
 	soil        int
 	fertilizer  int
 	water       int
@@ -36,12 +35,12 @@ func main() {
 	check(err)
 	dataLines := strings.Split(string(data), "\n")
 	seedsStr := strings.Fields(strings.Split(string(dataLines[0]), ":")[1])
-	var seeds []Seed
+	// Initial seeding
+	var seeds map[int]Seed
 	for _, seed := range seedsStr {
 		seedId := convertStrToInt(seed)
 		if seedId > 0 {
 			seed := Seed{
-				seed:        seedId,
 				soil:        0,
 				fertilizer:  0,
 				water:       0,
@@ -50,7 +49,7 @@ func main() {
 				humidity:    0,
 				location:    0,
 			}
-			seeds = append(seeds, seed)
+			seeds[seedId] = seed
 		}
 	}
 	fmt.Println(seeds)
