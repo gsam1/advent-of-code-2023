@@ -23,6 +23,13 @@ type Seed struct {
 	location    int
 }
 
+type Mapping struct {
+	name        string
+	destination int
+	source      int
+	length      int
+}
+
 func convertStrToInt(inputStr string) int {
 	num, err := strconv.Atoi(inputStr)
 	check(err)
