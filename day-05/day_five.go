@@ -30,6 +30,12 @@ type Mapping struct {
 	length      int
 }
 
+/*
+{
+	'seed_to_soil'
+}
+*/
+
 func convertStrToInt(inputStr string) int {
 	num, err := strconv.Atoi(inputStr)
 	check(err)
@@ -61,7 +67,6 @@ func main() {
 	}
 
 	mapSplits := strings.Split(string(data), "\n\n")
-	type CustomMap map[int]int
 
 	for _, mapping := range mapSplits {
 		fmt.Println(mapping)
