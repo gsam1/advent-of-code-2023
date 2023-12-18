@@ -23,23 +23,28 @@ type Seed struct {
 	location    int
 }
 
-type Mapping struct {
-	name        string
-	destination int
-	source      int
-	length      int
-}
-
-/*
-{
-	'seed_to_soil'
-}
-*/
-
-func convertStrToInt(inputStr string) int {
+func strToInt(inputStr string) int {
 	num, err := strconv.Atoi(inputStr)
 	check(err)
 	return num
+}
+
+func parseInnerSplit(input []string) [][]int {
+	innerSlice := make([][]int, len(input))
+	for i, line := range input {
+		lineInt := make([]int, 3)
+		for ii, el := range strings.Fields(line) {
+			lineInt[ii] = strToInt(el)
+		}
+		innerSlice[i] = lineInt
+	}
+
+	return innerSlice
+}
+
+func sortSlice(input [][]int) [][]int {
+
+	return input
 }
 
 func main() {
@@ -51,7 +56,7 @@ func main() {
 	// Initial seeding
 	seeds := map[int]Seed{}
 	for _, seed := range seedsStr {
-		seedId := convertStrToInt(seed)
+		seedId := strToInt(seed)
 		if seedId > 0 {
 			seed := Seed{
 				soil:        0,
@@ -69,7 +74,14 @@ func main() {
 	mapSplits := strings.Split(string(data), "\n\n")
 
 	for _, mapping := range mapSplits {
-		fmt.Println(mapping)
+		fmt.Println("--")
+		innerMapSplit := strings.Split(mapping, "\n")
+		mapName := innerMapSplit[0]
+		fmt.Println(mapName)
+		innerSlice := parseInnerSplit(innerMapSplit[1:])
+		fmt.Println(innerSlice)
+		// sort the slices
+
 	}
 
 }
