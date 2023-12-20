@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -42,9 +43,25 @@ func parseInnerSplit(input []string) [][]int {
 	return innerSlice
 }
 
-func sortSlice(input [][]int) [][]int {
+func sortSlice(input [][]int, sortedIndex int) [][]int {
+	newArray := make([][]int, len(input))
+	copy(newArray, input)
+	sort.Slice(newArray[:], func(i, j int) bool {
+		return newArray[i][sortedIndex] < newArray[j][sortedIndex]
+	})
+	return newArray
+}
 
-	return input
+func printMapContinue(input [][]int, index int) {
+	for i, el := range input {
+		if i+1 >= len(input) {
+			break
+		}
+		currentMapEnd := el[index] + el[2]
+		nextSliceStart := input[i+1][index]
+		fmt.Println(el[index], currentMapEnd, nextSliceStart, currentMapEnd == nextSliceStart)
+		// fmt.Println("Start range", el[1], "End of range", el[1]+el[2], "Next range start", innerSlice[i][1])
+	}
 }
 
 func main() {
@@ -79,9 +96,14 @@ func main() {
 		mapName := innerMapSplit[0]
 		fmt.Println(mapName)
 		innerSlice := parseInnerSplit(innerMapSplit[1:])
-		fmt.Println(innerSlice)
 		// sort the slices
-
+		sortedSliceBySrc := sortSlice(innerSlice, 1)
+		sortedSliceByDest := sortSlice(innerSlice, 0)
+		// fmt.Println(sortedSliceBySrc)
+		fmt.Println("Source")
+		printMapContinue(sortedSliceBySrc, 1)
+		fmt.Println("Destination")
+		printMapContinue(sortedSliceByDest, 0)
 	}
 
 }
